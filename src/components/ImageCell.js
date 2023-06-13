@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editImage } from '../actions';
+import '../index.css';
 
 class ImageCell extends Component {
   state = {
@@ -54,7 +55,7 @@ class ImageCell extends Component {
           <span>{name}</span>
         )}
         < img src ={image.url} alt={name} />
-        <button onClick={this.onEditButtonClick}>{editing ? 'Save' : 'Edit'}</button>
+        <button  onClick={this.onEditButtonClick}>{editing ? 'Save' : 'Edit'}</button>
         {editing && <button onClick={this.onCancel}>Cancel</button>}
       </div>
     );
