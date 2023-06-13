@@ -1,36 +1,19 @@
+import { createReducer } from '@reduxjs/toolkit';
+import { addImage, editImage } from './actions';
 
-import { FETCH_IMAGES_REQUEST, FETCH_IMAGES_SUCCESS, FETCH_IMAGES_FAILURE } from '../actions';
+let id = 0;
 
-const initialState = {
- [],
-  loading: false,
-  error: null
-};
+const imagesReducer = createReducer([], builder => {
+  builder
+    .addCase(addImage, (state, action) => {
+      const images = action.payload.map(url => ({ id: id++, url, name: '' }));
+      state.push(...images);
+    })
+    .addCase(editImage, (state, action) => {
+      const { id, name } = action.payload;
+      const image = state.find(image => image.id === id);
+      image.name = name;
+    });
+});
 
-const imageReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_IMAGES_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: null
-      };
-    case FETCH_IMAGES_SUCCESS:
-      return {
-        ...state,
-        images: action.payload,
-        loading: false,
-        error: null
-      };
-    case FETCH_IMAGES_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload
-      };
-    default:
-      return state;
-  }
-};
-
-export default imageReducer;
+export default imagesReducer;
