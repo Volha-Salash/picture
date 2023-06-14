@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { editImage } from '../actions';
-import '../index.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { editImage } from "../actions";
+import "../index.css";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 class ImageCell extends Component {
   state = {
@@ -13,12 +15,12 @@ class ImageCell extends Component {
     this.setState({ editing: true });
   };
 
-  onNameChange = event => {
+  onNameChange = (event) => {
     this.setState({ name: event.target.value });
   };
 
-  onKeyDown = event => {
-    if (event.key === 'Enter') {
+  onKeyDown = (event) => {
+    if (event.key === "Enter") {
       this.onSave();
     }
   };
@@ -43,20 +45,32 @@ class ImageCell extends Component {
 
     return (
       <div className="image-cell">
-        {editing ? (
-          <input
-            type="text"
-            value={name}
-            onChange={this.onNameChange}
-            onBlur={this.onSave}
-            onKeyDown={this.onKeyDown}
-          />
-        ) : (
-          <span>{name}</span>
-        )}
-        < img src ={image.url} alt={name} />
-        <button  onClick={this.onEditButtonClick}>{editing ? 'Save' : 'Edit'}</button>
-        {editing && <button onClick={this.onCancel}>Cancel</button>}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <img style={{ height: "200px" }} src={image.url} alt={name} />
+          {editing ? (
+            <TextField
+              id="standard-basic"
+              label="Picture name"
+              variant="standard"
+              type="text"
+              value={name}
+              onChange={this.onNameChange}
+              onBlur={this.onSave}
+              onKeyDown={this.onKeyDown}
+            />
+          ) : (
+            <span>{name}</span>
+          )}
+          <div style={{ display: "flex" }}>
+            <Button
+              sx={{ width: "100px", marginRight: "20px" }}
+              variant="outlined"
+              onClick={this.onEditButtonClick}
+            >
+              {editing ? "Save" : "Edit"}
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
-import ImageCell from './ImageCell';
-import { connect } from 'react-redux';
-import '../index.css';
-
+import React, { Component } from "react";
+import ImageCell from "./ImageCell";
+import { connect } from "react-redux";
+import "../index.css";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
 
 class ImageGrid extends Component {
   state = {
-    imageSize: "small"
+    imageSize: "small",
   };
 
-  handleSizeChange = e => {
+  handleSizeChange = (e) => {
     this.setState({ imageSize: e.target.value });
   };
 
@@ -20,27 +23,30 @@ class ImageGrid extends Component {
     return (
       <div className="image-grid">
         <div className="image-size-toggle">
-          <label>
-            <input
-              type="radio"
-              value="small"
-              checked={imageSize === "small"}
-              onChange={this.handleSizeChange}
-            />
-            Small
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="large"
-              checked={imageSize === "large"}
-              onChange={this.handleSizeChange}
-            />
-            Large
-          </label>
+          <FormControl>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              name="radio-buttons-group"
+            >
+              <FormControlLabel
+                value="small"
+                control={<Radio />}
+                label="small"
+                onChange={this.handleSizeChange}
+              />
+              <FormControlLabel
+                value="large"
+                control={<Radio />}
+                label="large"
+                onChange={this.handleSizeChange}
+              />
+            </RadioGroup>
+          </FormControl>
         </div>
-        <div className={`image-grid__container image-grid__container--${imageSize}`}>
-          {images.map(image => (
+        <div
+          className={`image-grid__container image-grid__container--${imageSize}`}
+        >
+          {images.map((image) => (
             <ImageCell key={image.id} image={image} />
           ))}
         </div>
@@ -49,7 +55,7 @@ class ImageGrid extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   images: state.images,
 });
 
