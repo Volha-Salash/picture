@@ -5,6 +5,7 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { MuiFileInput } from "mui-file-input";
 import TextField from "@mui/material/TextField";
+import ImagesService from "../services/ImagesService";
 
 const MyComponent = () => {
   const [file, setFile] = React.useState(null);
@@ -17,9 +18,34 @@ const MyComponent = () => {
 };
 
 class ImageUploader extends Component {
-  state = {
-    selectedFiles: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null,
+      isLoading: false,
+      error: null,
+      selectedFiles: [],
+    };
+  }
+
+  componentDidMount() {
+    console.log('test2');
+    this.fetchData();
+  }
+
+  fetchData = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+     //const response = await ImagesService.fetchImages();
+      const response = await axios.get('https://localhost:5290/api/image');
+      console.log(response);
+      this.setState({ data: response.data, isLoading: false });
+    } catch (error) {
+      console.log(error.message);
+      this.setState({ error: error.message, isLoading: false });
+    }
+  }
 
   fileSelectedHandler = (event) => {
     const files = Array.from(event.target.files);
@@ -59,3 +85,4 @@ class ImageUploader extends Component {
 }
 
 export default connect(null, { addImage })(ImageUploader);
+
