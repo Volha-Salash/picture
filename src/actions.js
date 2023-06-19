@@ -7,7 +7,7 @@ export const editImage = createAction('images/edit',
     payload: { id, name } 
 }));
 */
-import { createAsyncThunk} from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchImages = createAsyncThunk(
   'images/fetchImages',
@@ -47,4 +47,14 @@ export const editImage = createAsyncThunk(
     return { id, updatedImage: data };
   }
 
+);
+
+export const deleteImage = createAsyncThunk(
+  'images/deleteImage',
+  async ({ id, deleteImage }) => {
+    const response = await fetch(`/api/imagedelete/${id}`, {
+      method: 'DELETE',
+    }); 
+    return id;
+  }
 );

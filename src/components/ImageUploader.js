@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchImages, uploadImage, editImage } from "../actions";
+import { 
+  fetchImages, 
+  uploadImage, 
+  editImage, 
+  deleteImage 
+} from "../actions";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { MuiFileInput } from "mui-file-input";
@@ -21,7 +26,7 @@ class ImageUploader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       selectedFiles: [],
+      selectedFiles: [],
     };
   }
 
@@ -30,21 +35,7 @@ class ImageUploader extends Component {
     //this.fetchData();
     this.props.fetchImages();
   }
-/*
-  fetchData = async () => {
-    this.setState({ isLoading: true });
 
-    try {
-     //const response = await ImagesService.fetchImages();
-      const response = await axios.get('https://localhost:5290/api/image');
-      console.log(response);
-      this.setState({ data: response.data, isLoading: false, selectedFiles: response.selectedFiles });
-    } catch (error) {
-      console.log(error.message);
-      this.setState({ error: error.message, isLoading: false });
-    }
-  }
-  */
 
   fileSelectedHandler = (event) => {
     const files = Array.from(event.target.files);
@@ -73,15 +64,38 @@ class ImageUploader extends Component {
     }
   };
 
+
+
+
   render() {
     return (
       <div>
         <TextField type="file" multiple onChange={this.fileSelectedHandler} />
-        <Button onClick={this.fileUploadHandler}>Upload</Button>
+        <Button 
+        sx={{ width: "100px", marginRight: "20px" }}
+        variant="outlined"
+        onClick={this.fileUploadHandler}>Upload
+        </Button>
+       
       </div>
     );
   }
 }
 
-export default connect(null, { fetchImages, uploadImage, editImage  })(ImageUploader);
+export default connect(null, { fetchImages, uploadImage, editImage, deleteImage })(ImageUploader);
 
+/*
+  fetchData = async () => {
+    this.setState({ isLoading: true });
+
+    try {
+     //const response = await ImagesService.fetchImages();
+      const response = await axios.get('https://localhost:5290/api/image');
+      console.log(response);
+      this.setState({ data: response.data, isLoading: false, selectedFiles: response.selectedFiles });
+    } catch (error) {
+      console.log(error.message);
+      this.setState({ error: error.message, isLoading: false });
+    }
+  }
+  */

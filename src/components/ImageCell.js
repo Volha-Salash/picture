@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { editImage } from "../actions";
+import { editImage, deleteImage } from "../actions";
 import "../index.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -39,6 +39,10 @@ class ImageCell extends Component {
     this.setState({ editing: false, name: this.props.image.name });
   };
 
+  handleDeleteImage = (id) => {
+    this.props.deleteImage(id);
+  };
+
   render() {
     const { image } = this.props;
     const { editing, name } = this.state;
@@ -69,6 +73,11 @@ class ImageCell extends Component {
             >
               {editing ? "Save" : "Edit"}
             </Button>
+            <Button 
+            sx={{ width: "100px", marginRight: "20px" }}
+            variant="outlined"
+            onClick={this.handleDeleteImage}>Delete
+            </Button>
           </div>
         </div>
       </div>
@@ -76,4 +85,4 @@ class ImageCell extends Component {
   }
 }
 
-export default connect(null, { editImage })(ImageCell);
+export default connect(null, { editImage, deleteImage })(ImageCell);
