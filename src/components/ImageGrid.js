@@ -46,7 +46,7 @@ class ImageGrid extends Component {
         <div
           className={`image-grid__container image-grid__container--${imageSize}`}
         >
-          {images.map((image) => (
+          {images.images.map((image) => (
             <ImageCell key={image.id} image={image} />
           ))}
         </div>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addImage } from "../actions";
+import { fetchImages, uploadImage, editImage } from "../actions";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { MuiFileInput } from "mui-file-input";
@@ -21,18 +21,16 @@ class ImageUploader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
-      isLoading: false,
-      error: null,
-      selectedFiles: [],
+       selectedFiles: [],
     };
   }
 
   componentDidMount() {
-    console.log('test2');
-    this.fetchData();
+    console.log('test_componentDidMount');
+    //this.fetchData();
+    this.props.fetchImages();
   }
-
+/*
   fetchData = async () => {
     this.setState({ isLoading: true });
 
@@ -40,19 +38,20 @@ class ImageUploader extends Component {
      //const response = await ImagesService.fetchImages();
       const response = await axios.get('https://localhost:5290/api/image');
       console.log(response);
-      this.setState({ data: response.data, isLoading: false });
+      this.setState({ data: response.data, isLoading: false, selectedFiles: response.selectedFiles });
     } catch (error) {
       console.log(error.message);
       this.setState({ error: error.message, isLoading: false });
     }
   }
+  */
 
   fileSelectedHandler = (event) => {
     const files = Array.from(event.target.files);
     const urls = files.map((file) => URL.createObjectURL(file));
 
     // Dispatch the addImage action to store new images
-    this.props.addImage(urls);
+    this.props.uploadImage(urls);
   };
 
   fileUploadHandler = async () => {
@@ -64,7 +63,7 @@ class ImageUploader extends Component {
       formData.append("file", fileInput.files[0]);
 
       try {
-        const response = await axios.post("/upload", formData);
+        const response = await axios.post("/uploadImage", formData);
         console.log(response);
       } catch (error) {
         console.error(error);
@@ -84,5 +83,5 @@ class ImageUploader extends Component {
   }
 }
 
-export default connect(null, { addImage })(ImageUploader);
+export default connect(null, { fetchImages, uploadImage, editImage  })(ImageUploader);
 
