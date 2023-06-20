@@ -19,7 +19,7 @@ const imagesReducer = createReducer([], builder => {
 export default imagesReducer;
 */
 import { createReducer } from '@reduxjs/toolkit';
-import {fetchImages,uploadImage,editImage,} from './actions';
+import {fetchImages,uploadImage,editImage, deleteImage} from './actions';
 
 const initialState = {
   images: [],
@@ -63,6 +63,21 @@ const imagesReducer = createReducer(initialState, (builder) => {
       }
     })
     .addCase(editImage.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error;
+    })
+    .addCase(deleteImage.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(deleteImage.fulfilled, (state, action) => {
+      state.isLoading = false;
+      const id = action.payload;
+      const index = state.images.findIndex((image) => image.id === id);
+      if (index !== -1) {
+        state.images.splice(index, 1);
+      }
+    })
+    .addCase(deleteImage.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
     });

@@ -43,6 +43,8 @@ class ImageCell extends Component {
     this.props.deleteImage(id);
   };
 
+
+
   render() {
     const { image } = this.props;
     const { editing, name } = this.state;
@@ -76,7 +78,7 @@ class ImageCell extends Component {
             <Button 
             sx={{ width: "100px", marginRight: "20px" }}
             variant="outlined"
-            onClick={this.handleDeleteImage}>Delete
+            onClick={()=>this.handleDeleteImage(this.props.id)}>Delete
             </Button>
           </div>
         </div>

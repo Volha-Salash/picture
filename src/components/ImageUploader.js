@@ -10,7 +10,7 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { MuiFileInput } from "mui-file-input";
 import TextField from "@mui/material/TextField";
-import ImagesService from "../services/ImagesService";
+//import ImagesUploadService from "../services/ImagesService";
 
 const MyComponent = () => {
   const [file, setFile] = React.useState(null);
@@ -33,7 +33,7 @@ class ImageUploader extends Component {
   componentDidMount() {
     console.log('test_componentDidMount');
     //this.fetchData();
-    this.props.fetchImages();
+    this.props.fetchImages(); 
   }
 
 
@@ -54,7 +54,7 @@ class ImageUploader extends Component {
       formData.append("file", fileInput.files[0]);
 
       try {
-        const response = await axios.post("/uploadImage", formData);
+        const response = await axios.post("/api/image", formData);
         console.log(response);
       } catch (error) {
         console.error(error);

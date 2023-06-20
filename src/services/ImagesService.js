@@ -5,3 +5,10 @@ export default class ImagesService {
     return await $api.get("/image");
   }
 }
+/*
+export default class ImagesUploadService {
+  static async uploadImage() {
+    return await $api.get('/api/image');
+  }
+}
+*/
