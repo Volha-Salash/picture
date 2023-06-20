@@ -21,7 +21,7 @@ export const fetchImages = createAsyncThunk(
 export const uploadImage = createAsyncThunk(
   'images/uploadImage',
   async (image) => {
-    const response = await fetch('/api/image', {
+    const response = await fetch('/api/image/', {
       method: 'POST',
       body: JSON.stringify(image),
       headers: {
@@ -36,8 +36,8 @@ export const uploadImage = createAsyncThunk(
 export const editImage = createAsyncThunk(
   'images/editImage',
   async ({ id, updatedImage }) => {
-    const response = await fetch(`/api/image/updateName/${id}`, {
-      method: 'PUT',
+    const response = await fetch(`/api/image/${id}, ${updatedImage}`, {
+      method: 'PATCH',
       body: JSON.stringify(updatedImage),
       headers: {
         'Content-Type': 'application/json',
@@ -51,15 +51,12 @@ export const editImage = createAsyncThunk(
 
 export const deleteImage = createAsyncThunk(
   'images/deleteImage',
-  async ({ id, deleteImage }) => {
+  async ({ id}) => {
     const response = await fetch(`/api/image/${id}`, {
       method: 'DELETE',
-      body: JSON.stringify(deleteImage),
-      headers: {
-        'Content-Type': 'application/json',
-      },
     }); 
     const data = await response.json();
-    return {id, deleteImage: data};
+    return {data};
   }
 );
+
