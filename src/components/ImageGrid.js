@@ -8,9 +8,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
 class ImageGrid extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     imageSize: "small",
   };
+}
 
   handleSizeChange = (e) => {
     this.setState({ imageSize: e.target.value });

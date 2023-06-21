@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { editImage, deleteImage } from "../actions";
+import { fetchImages, editImage, deleteImage } from "../actions";
 import "../index.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,24 +10,31 @@ import EditIcon from '@mui/icons-material/Edit';
 
 
 class ImageCell extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     editing: false,
     name: this.props.image.name,
   };
+}
+
 
   onEditButtonClick = () => {
     this.setState({ editing: true });
   };
 
+
   onNameChange = (event) => {
     this.setState({ name: event.target.value });
   };
+
 
   onKeyDown = (event) => {
     if (event.key === "Enter") {
       this.onSave();
     }
   };
+
 
   onSave = async () => {
     const { image, editImage } = this.props;
@@ -37,9 +44,7 @@ class ImageCell extends Component {
       this.setState({ editing: false });
       return;
     }
-
     try {
-
       await editImage({
         id: image.id,
         newName: name
@@ -53,11 +58,15 @@ class ImageCell extends Component {
   };
 
 
-  handleDeleteImage = (id) => {
-    this.props.deleteImage(id);
-    console.log('deleteImage()');
-  };
-
+  handleDeleteImage = async (id) => {
+    try {
+      await this.props.deleteImage(id);
+      console.log('deleteImage()');
+      await this.props.fetchImages();
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    }
+  }
 
 
   render() {
@@ -102,4 +111,4 @@ class ImageCell extends Component {
   }
 }
 
-export default connect(null, { editImage, deleteImage })(ImageCell);
+export default connect(null, { fetchImages, editImage, deleteImage })(ImageCell);

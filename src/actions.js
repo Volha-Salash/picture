@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+
 
 export const fetchImages = createAsyncThunk(
   'images/fetchImages',
@@ -59,8 +58,8 @@ export const deleteImage = createAsyncThunk(
     const response = await fetch(`/api/image/${id}`, {
       method: 'DELETE',
     });
-    const data = await response.json();
-    return data;
+    const images = await response.json();
+    return images;
   }
 );
 
