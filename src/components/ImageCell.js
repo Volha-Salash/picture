@@ -4,6 +4,10 @@ import { editImage, deleteImage } from "../actions";
 import "../index.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+
 
 class ImageCell extends Component {
   state = {
@@ -25,22 +29,33 @@ class ImageCell extends Component {
     }
   };
 
-  onSave = () => {
-    const { image } = this.props;
+  onSave = async () => {
+    const { image, editImage } = this.props;
     const { name } = this.state;
 
-    // Dispatch the editImage action to update an image's name
-    this.props.editImage(image.id, name);
+    if (name === image.name) {
+      this.setState({ editing: false });
+      return;
+    }
 
-    this.setState({ editing: false });
+    try {
+
+      await editImage({
+        id: image.id,
+        newName: name
+      });
+
+      this.setState({ editing: false });
+      console.log('editImage()');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  onCancel = () => {
-    this.setState({ editing: false, name: this.props.image.name });
-  };
 
   handleDeleteImage = (id) => {
     this.props.deleteImage(id);
+    console.log('deleteImage()');
   };
 
 
@@ -51,7 +66,7 @@ class ImageCell extends Component {
 
     return (
       <div className="image-cell">
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "block", flexDirection: "column" }}>
           <img style={{ height: "200px" }} src={image.url} alt={name} />
           {editing ? (
             <TextField
@@ -70,16 +85,16 @@ class ImageCell extends Component {
           <div style={{ display: "flex" }}>
             <Button
               sx={{ width: "100px", marginRight: "20px" }}
-              variant="outlined"
+              variant="outlined" startIcon={<EditIcon />}
               onClick={this.onEditButtonClick}
             >
               {editing ? "Save" : "Edit"}
             </Button>
-            <Button 
-            sx={{ width: "100px", marginRight: "20px" }}
-            variant="outlined"
-            onClick={()=>this.handleDeleteImage(this.props.id)}>Delete
+            <Button variant="outlined" startIcon={<DeleteIcon />}
+              onClick={() => this.handleDeleteImage(this.props.image.id)}>
+              Delete
             </Button>
+
           </div>
         </div>
       </div>
