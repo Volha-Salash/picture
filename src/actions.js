@@ -20,7 +20,24 @@ export const fetchImages = createAsyncThunk(
 
 export const uploadImage = createAsyncThunk(
   'images/uploadImage',
-  async (image) => {
+  async (event) => {
+    
+    try {
+      console.log(event.target.files);
+      const formData = new FormData();
+      const file = event.target.files[0];
+      formData.append("Image", file);
+      formData.append("Name", file.name);
+      const { data } = await fetch("https://localhost:5290/api/image", formData);
+      console.log(data);
+     // setImageUrl(data.url);
+    } catch (err) {
+      console.warn(err);
+      alert("Ошибка при загрузке файла");
+    }}
+)
+  
+/*
     const response = await fetch('/api/image/', {
       method: 'POST',
       body: JSON.stringify(image),
@@ -31,7 +48,41 @@ export const uploadImage = createAsyncThunk(
     const data = await response.json();
     return data;
   }
+  
 );
+
+const handleChangeFile = async (event) => {
+  console.log(event.target.files);
+  try {
+    const formData = new FormData();
+    const file = event.target.files[0];
+    formData.append("image", file);
+    const { data } = await axios.post("/upload", formData);
+    console.log(data);
+    setImageUrl(data.url);
+  } catch (err) {
+    console.warn(err);
+    alert("Ошибка при загрузке файла");
+  }
+};
+*/
+
+
+
+
+/*
+const myFile = document.querySelector("input[type=file]").files[0];
+const data = new FormData();
+data.append("myFile", myFile);
+data.append("otherStuff", "stuff from a text input");
+fetch(target, {
+    method: "POST",
+    body: data
+});
+*/
+
+
+
 
 export const editImage = createAsyncThunk(
   'images/editImage',

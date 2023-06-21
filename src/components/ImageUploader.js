@@ -6,7 +6,7 @@ import {
   editImage, 
   deleteImage 
 } from "../actions";
-import axios from "axios";
+//import axios from "axios";
 import Button from "@mui/material/Button";
 import { MuiFileInput } from "mui-file-input";
 import TextField from "@mui/material/TextField";
@@ -44,7 +44,7 @@ class ImageUploader extends Component {
     // Dispatch the addImage action to store new images
     this.props.uploadImage(urls);
   };
-
+/*
   fileUploadHandler = async () => {
     const fileInput = document.getElementById("file");
 
@@ -63,6 +63,7 @@ class ImageUploader extends Component {
       console.error("No file selected");
     }
   };
+  */
 
 
 
@@ -74,7 +75,7 @@ class ImageUploader extends Component {
         <Button 
         sx={{ width: "100px", marginRight: "20px" }}
         variant="outlined"
-        onClick={this.fileUploadHandler}>Upload
+        onClick={this.imagesReducer}>Upload
         </Button>
        
       </div>
