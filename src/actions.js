@@ -63,3 +63,101 @@ export const deleteImage = createAsyncThunk(
   }
 );
 
+export const login = (username, password) => (dispatch) => {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  };
+
+  fetch("/user/login", requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("HTTP error " + response.status);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
+     // localStorage.setItem("refreshToken", JSON.stringify(data.refreshToken));
+      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+    })
+    .catch((error) => {
+      dispatch({ type: "LOGIN_FAILURE", payload: error.message });
+    });
+};
+
+/*
+const refreshTokenMiddleware = (store) => (next) => (action) => {
+  if (action.type === "TOKEN_EXPIRED") {
+    const { refreshToken } = JSON.parse(localStorage.getItem("refreshToken"));
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    };
+
+    fetch("/user/refresh-token", requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("HTTP error " + response.status);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
+        store.dispatch({ type: "TOKEN_REFRESHED", payload: data.accessToken });
+      })
+      .catch(() => {
+        store.dispatch({ type: "LOGOUT" });
+      });
+  }
+
+  return next(action);
+};
+*/
+
+/*
+export const login = createAsyncThunk(
+  'LOGIN/login', 
+  async (username, password) => {
+     const response = await fetch('/user/login', {
+       method: 'POST', 
+       headers: { 'Content-Type': 'application/json' }, 
+       body: JSON.stringify({
+         username, password 
+        }) });
+
+if (!response.ok) {
+   throw new Error('Invalid credentials'); 
+  }
+
+const data = await response.json(); 
+return data; 
+});
+
+
+export const refreshTokens = createAsyncThunk(
+  'REFRESH_TOKENS/refreshTokens',
+ async (_, getState) => {
+   const { refreshToken } = getState().auth;
+
+const response = await fetch('/user/refresh-token', {
+   method: 'POST', 
+   headers: { 'Content-Type': 'application/json' }, 
+   body: JSON.stringify({ refreshToken }) 
+  });
+
+if (!response.ok) {
+   throw new Error('Failed to refresh tokens'); }
+
+const data = await response.json(); 
+return data; 
+});
+
+export const logout = () => {
+   return { 
+    type: 'LOGOUT' 
+  }; 
+};
+*/
