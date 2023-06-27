@@ -80,10 +80,14 @@ export const login = (username, password) => (dispatch) => {
     .then((data) => {
       localStorage.setItem("accessToken", JSON.stringify(data.accessToken));
      // localStorage.setItem("refreshToken", JSON.stringify(data.refreshToken));
-      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+      dispatch({ 
+        type: "LOGIN_SUCCESS", 
+        payload: data });
     })
     .catch((error) => {
-      dispatch({ type: "LOGIN_FAILURE", payload: error.message });
+      dispatch({ 
+        type: "LOGIN_FAILURE", 
+        payload: error.message });
     });
 };
 
