@@ -20,6 +20,7 @@ export const loginFailure = (error) => ({
 
 // Async Action Creator
 export const loginUser = ({ email, password }) => {
+  console.log('login user');
   return async (dispatch) => {
     dispatch(loginRequest());
 
@@ -27,17 +28,18 @@ export const loginUser = ({ email, password }) => {
       
       const response = await fetch('https://localhost:5290/user/login', {
         method: 'POST',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
-
-      if (response.ok) {
+      console.log('response',response);
+      if (response) {
         const data = await response.json();
         const { token } = data;
 
-        
+        console.log('TOKEN', token);
         localStorage.setItem('token', token);
 
         

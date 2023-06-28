@@ -16,11 +16,14 @@ export const loginUser = createAsyncThunk(
         },
         body: JSON.stringify({ username, password }),
       });
-
+      console.log('response',response);
       if (response.ok) {
         const data = await response.json();
-        const { token } = data;
+        
+        console.log('data', data);
+        const { token } = data; 
 
+        console.log('TOKEN', token);
         localStorage.setItem('token', token);
 
         return token;
