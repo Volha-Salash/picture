@@ -62,7 +62,7 @@ export const deleteImage = createAsyncThunk(
     return images;
   }
 );
-
+/*
 export const login = (username, password) => (dispatch) => {
   const requestOptions = {
     method: "POST",

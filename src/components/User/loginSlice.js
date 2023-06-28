@@ -1,4 +1,108 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+
+
+export const loginUser = createAsyncThunk(
+  'login/loginUser',
+  async ({ username, password }, {
+    rejectWithValue }) => {
+    try {
+     
+      const response = await fetch('https://localhost:5290/user/login', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const { token } = data;
+
+        localStorage.setItem('token', token);
+
+        return token;
+      } else {
+        const error = await response.text();
+        return rejectWithValue(error);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const signupUser = createAsyncThunk(
+  'login/signupUser',
+  async ({ name, email, password }, thunkAPI) => {
+    try {
+      const response = await fetch(
+        'https://localhost:5290/user/register',
+        {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        }
+      );
+      let data = await response.json();
+      console.log('data', data);
+
+      if (response.status === 200) {
+        localStorage.setItem('token', data.token);
+        return { ...data, username: name, email: email };
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      console.log('Error', e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+
+
+const loginSlice = createSlice({
+  name: 'login',
+  initialState: {
+    token: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.token = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+
+
+export default loginSlice.reducer;
+
+
+/*import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const signupUser = createAsyncThunk(
   'users/signupUser',
@@ -169,3 +273,4 @@ export const userSlice = createSlice({
 export const { clearState } = userSlice.actions;
 
 export const userSelector = (state) => state.user;
+*/
