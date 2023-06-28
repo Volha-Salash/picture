@@ -1,45 +1,47 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import ImageUploader from '../ImageUploader';
-import ImageGrid from '../ImageGrid';
-import { setAuthenticated } from './authenticatedSlice';
+
+
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      authenticated: false,
+      currentUser: null,
     };
   }
-  componentDidMount() {
-    const token = localStorage.getItem('token');
 
-    if (token) {
-      this.props.loginUser({ token });
+  componentDidMount() {
+    const currentUser = JSON.parse(localStorage.getItem('token'));
+
+    if (currentUser) {
+      this.setState({ currentUser });
     }
   }
 
   render() {
-    const { authenticated } = this.props;
+    const { currentUser } = this.state;
 
-    if (!authenticated) {
+    if (!currentUser) {
       return <Redirect to="/login" />;
     }
 
+
     return (
       <div>
-        <ImageUploader />
-        <ImageGrid />
+        <h1> Dashboard </h1>
+        {currentUser ? (
+          <div>
+            <p>current UserToken: {currentUser.token}</p>
+          </div>
+        ) : (
+          <p>No user information available</p>
+        )}
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  authenticated: state.login.authenticated,
-});
+export default Dashboard;
 
-const mapDispatchToProps = { setAuthenticated};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
