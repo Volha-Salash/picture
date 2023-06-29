@@ -73,10 +73,12 @@ class ImageCell extends Component {
     const { image } = this.props;
     const { editing, name } = this.state;
 
+    const imageUrl = image ? `https://localhost:5290/images/${image.url}` : "";
+
     return (
       <div className="image-cell">
         <div style={{ display: "block", flexDirection: "column" }}>
-          <img style={{ height: "200px" }} src={"https://localhost:5290/api/image/" + image.url} alt={name} />
+          <img style={{ height: "200px" }} src={imageUrl} alt={name} />
           {editing ? (
             <TextField
               id="standard-basic"

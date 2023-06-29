@@ -14,10 +14,17 @@ class Login extends React.Component {
     };
   }
 
+
   componentDidMount() {
     const currentUserToken = localStorage.getItem('token');
     if (currentUserToken) {
       this.props.history.push('/');
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.isLoggedIn !== this.state.isLoggedIn && this.state.isLoggedIn) {
+      this.props.history.push("/");
     }
   }
 
@@ -31,13 +38,14 @@ class Login extends React.Component {
     const { username, password } = this.state;
     this.setState({ isLoggedIn: true }); 
     this.props.loginUser({ username, password });
-  }
 
-  render() {
+}
+
+    render() {
     const { isLoggedIn } = this.state;
 
     if (isLoggedIn) {
-      return <Redirect to="/" />;
+      return <Redirect to="/" />
     }
 
     return (
@@ -60,8 +68,11 @@ class Login extends React.Component {
         <button onClick={this.handleLogin}>Login</button>
       </div>
     );
-  }
+    }
 }
+  
+
+
 
 const mapStateToProps = (state) => ({
   isLoggedIn: state.login.isLoggedIn,
