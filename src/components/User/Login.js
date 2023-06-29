@@ -10,13 +10,14 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
+      isLoggedIn: false,
     };
   }
 
   componentDidMount() {
     const currentUserToken = localStorage.getItem('token');
     if (currentUserToken) {
-      this.props.history.push('/dashboard');
+      this.props.history.push('/');
     }
   }
 
@@ -28,14 +29,15 @@ class Login extends React.Component {
 
   handleLogin = () => {
     const { username, password } = this.state;
+    this.setState({ isLoggedIn: true }); 
     this.props.loginUser({ username, password });
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn } = this.state;
 
     if (isLoggedIn) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/" />;
     }
 
     return (

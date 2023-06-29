@@ -21,6 +21,7 @@ export const uploadImage = createAsyncThunk(
       formData.append("Image", file, file.name);
       const response = await fetch("/api/image", {
         method: "POST",
+        mode: 'cors',
         body: formData
       });
       const data = await response.json();
@@ -40,6 +41,7 @@ export const editImage = createAsyncThunk(
   async ({ id, newName }) => {
     const response = await fetch(`/api/image/updateName/${id}/${newName}`, {
       method: 'PATCH',
+      mode: 'cors',
       body: JSON.stringify({ name: newName }),
       headers: {
         'Content-Type': 'application/json',
@@ -57,6 +59,7 @@ export const deleteImage = createAsyncThunk(
   async (id) => {
     const response = await fetch(`/api/image/${id}`, {
       method: 'DELETE',
+      mode: 'cors',
     });
     const images = await response.json();
     return images;

@@ -76,7 +76,7 @@ class ImageCell extends Component {
     return (
       <div className="image-cell">
         <div style={{ display: "block", flexDirection: "column" }}>
-          <img style={{ height: "200px" }} src={image.url} alt={name} />
+          <img style={{ height: "200px" }} src={"https://localhost:5290/api/image/" + image.url} alt={name} />
           {editing ? (
             <TextField
               id="standard-basic"

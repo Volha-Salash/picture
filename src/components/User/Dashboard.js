@@ -1,5 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import ImageUploader from '../ImageUploader';
+import ImageGrid from '../ImageGrid';
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -23,7 +26,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { currentUser, isLoading } = this.state;
-    console.log('currentUser', currentUser);
+   // console.log('currentUser', currentUser);
 
     if (isLoading) {
       return <p>Loading...</p>; 
@@ -35,10 +38,12 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <h1>Dashboard</h1>
+        <h1>Pictures</h1>
         {currentUser ? (
           <div>
-            <p>Current User Token: {currentUser.token}</p>
+            < ImageUploader/>
+            <ImageGrid/>
+
           </div>
         ) : (
           <p>No user information available</p>
