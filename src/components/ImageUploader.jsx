@@ -6,9 +6,10 @@ import {
   editImage,
   deleteImage
 } from "../actions";
-import Button from "@mui/material/Button";
+
 import TextField from "@mui/material/TextField";
-import FilledInput from '@mui/material/FilledInput';
+
+
 
 
 class ImageUploader extends Component {
@@ -33,9 +34,11 @@ class ImageUploader extends Component {
   render() {
     return (
       <div>
+        
         <TextField
           id="outlined" variant="outlined"
           type="file" onChange={this.handleChange.bind(this)} />
+          
       </div>
     );
   }

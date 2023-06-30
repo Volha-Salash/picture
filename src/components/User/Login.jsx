@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loginUser } from './loginSlice';
 import { Redirect } from 'react-router-dom';
+import Button from "@mui/material/Button";
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,13 +19,13 @@ class Login extends React.Component {
   componentDidMount() {
     const currentUserToken = localStorage.getItem('token');
     if (currentUserToken) {
-      this.props.history.push('/');
+      this.props.history.push('/dashboard');
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isLoggedIn !== this.state.isLoggedIn && this.state.isLoggedIn) {
-      this.props.history.push("/");
+      this.props.history.push("/dashboard");
     }
   }
 
@@ -36,41 +37,43 @@ class Login extends React.Component {
 
   handleLogin = () => {
     const { username, password } = this.state;
-    this.setState({ isLoggedIn: true }); 
+    this.setState({ isLoggedIn: true });
     this.props.loginUser({ username, password });
+  }
 
-}
-
-    render() {
-    const { isLoggedIn } = this.state;
-
-    if (isLoggedIn) {
-      return <Redirect to="/" />
+  render() {
+    if (this.state.isLoggedIn) {
+      return <Redirect to="/dashboard" />;
     }
 
+
     return (
-      <div>
+      <div className="image-cell">
+        <div style={{ display: "block", flexDirection: "column" }}>
         <h2>Login</h2>
-        <input
+        <input style={{ display: "block", flexDirection: "column" }}
           type="username"
           name="username"
           placeholder="Username"
           value={this.state.username}
           onChange={this.handleInputChange}
         />
-        <input
+        <input style={{ display: "block", flexDirection: "column" }}
           type="password"
           name="password"
           placeholder="Password"
           value={this.state.password}
           onChange={this.handleInputChange}
         />
-        <button onClick={this.handleLogin}>Login</button>
+        <Button variant="outlined" style={{ display: "block", flexDirection: "column" }} 
+        onClick={this.handleLogin}>Login</Button>
+      </div>
       </div>
     );
-    }
+  }
 }
-  
+
+
 
 
 

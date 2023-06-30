@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-
+const handle200redirect = () => {
+  window.location.href = '/dashboard';
+}
 
 export const loginUser = createAsyncThunk(
   'login/loginUser',
   async ({ username, password }, {
     rejectWithValue }) => {
     try {
-     
-      const response = await fetch('https://localhost:5290/user/login', {
+
+      const response = await fetch('/user/login', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -16,17 +18,20 @@ export const loginUser = createAsyncThunk(
         },
         body: JSON.stringify({ username, password }),
       });
-      console.log('response',response);
+      console.log('response', response);
       if (response.ok) {
         const data = await response.json();
-        
+
         console.log('data', data);
-        const { token } = data; 
+        const { token } = data;
 
         console.log('TOKEN', token);
         localStorage.setItem('token', token);
-
+        if (response.status === 200) {
+          handle200redirect();
+        }
         return token;
+
       } else {
         const error = await response.text();
         return rejectWithValue(error);
@@ -39,10 +44,10 @@ export const loginUser = createAsyncThunk(
 
 export const signupUser = createAsyncThunk(
   'login/signupUser',
-  async ({ name, email, password }, thunkAPI) => {
+  async ({ username, email, password }, thunkAPI) => {
     try {
       const response = await fetch(
-        'https://localhost:5290/user/register',
+        '/user/register',
         {
           method: 'POST',
           mode: 'cors',
@@ -51,7 +56,7 @@ export const signupUser = createAsyncThunk(
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name,
+            username,
             email,
             password,
           }),
@@ -62,7 +67,8 @@ export const signupUser = createAsyncThunk(
 
       if (response.status === 200) {
         localStorage.setItem('token', data.token);
-        return { ...data, username: name, email: email };
+        handle200redirect();
+        return { ...data, username: username, email: email };
       } else {
         return thunkAPI.rejectWithValue(data);
       }

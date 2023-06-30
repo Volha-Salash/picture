@@ -2,15 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {  signupUser } from "./loginSlice";
+import { Redirect } from 'react-router-dom';
+import Button from "@mui/material/Button";
+
 
 class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      username: '',
       email: '',
       password: '',
+      isSignnup: false,
     };
+  }
+
+  componentDidMount() {
+    const currentUserToken = localStorage.getItem('token');
+    if (currentUserToken) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
+    componentDidUpdate(prevProps, prevState) {
+    if (prevState.isSignnup !== this.state.isSignnup && this.state.isSignnup) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   handleInputChange = (event) => {
@@ -21,19 +38,25 @@ class Signup extends React.Component {
 
  
   handleSignup = () => {
-    const { name, email, password } = this.state;
-    this.props.signupUser({ name, email, password });
+    const { username, email, password } = this.state;
+    this.setState({ isSignnup: true }); 
+    this.props.signupUser({ username, email, password });
   }
 
   render() {
+        const { isSignnup } = this.state;
+
+    if (isSignnup) {
+      return <Redirect to="/dashboard" />
+    }
        return (
         <div style={{ display: "block" }}>
                <h2>Signup</h2>
         <input
           type="text"
-          name="name"
-          placeholder="Name"
-          value={this.state.name}
+          name="username"
+          placeholder="username"
+          value={this.state.username}
           onChange={this.handleInputChange}
         />
         <input
@@ -50,7 +73,7 @@ class Signup extends React.Component {
           value={this.state.password}
           onChange={this.handleInputChange}
         />
-        <button onClick={this.handleSignup}>Signup</button>
+        <Button onClick={this.handleSignup}>Signup</Button>
       </div>
       
     );

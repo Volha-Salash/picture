@@ -6,6 +6,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import ErrorBoundary from "../helpers/ErrorBoundary";
 
 class ImageGrid extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class ImageGrid extends Component {
 
     return (
       <div className="image-grid">
+        <ErrorBoundary>
         <div className="image-size-toggle">
           <FormControl>
             <RadioGroup
@@ -46,14 +48,18 @@ class ImageGrid extends Component {
             </RadioGroup>
           </FormControl>
         </div>
+        </ErrorBoundary>
         <div
           className={`image-grid__container image-grid__container--${imageSize}`}
-        >
+        ><ErrorBoundary>
           {images.images.map((image) => (
             <ImageCell key={image.id} image={image} />
           ))}
+          </ErrorBoundary>
         </div>
+        
       </div>
+      
     );
   }
 }
